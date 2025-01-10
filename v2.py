@@ -8,7 +8,7 @@ block_size = 256 # what is the maximum context length for predictions?
 max_iters = 5000
 eval_interval = 500
 learning_rate = 3e-4
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'mps' if torch.cuda.is_available() else 'cpu' # can also use 'cuda'
 eval_iters = 200
 n_embd = 384
 n_head = 6
@@ -207,3 +207,9 @@ for iter in range(max_iters):
 # generate from the model
 context = torch.zeros((1,1), dtype=torch.long, device=device)
 print(decode(m.generate(context, max_new_tokens=500)[0].tolist()))
+
+# save model weights
+torch.save(m.state_dict(), 'weights.pth')
+
+# load model weights
+# model.load_state_dict(torch.load('model.pth'))
